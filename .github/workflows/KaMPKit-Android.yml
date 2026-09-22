@@ -23,6 +23,9 @@ jobs:
           distribution: corretto
           java-version: 17
 
+      - name: Install Android SDK prerequisites
+        run: sudo apt-get update && sudo apt-get install -y unzip
+
       - uses: android-actions/setup-android@v3
 
       - name: Setup Gradle
@@ -30,5 +33,4 @@ jobs:
 
       - name: Build
         run: ./gradlew build
-
 

@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ${{ github.event_name == 'pull_request' && 'macos-15-intel' || 'personal-ci-macos-arm64' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,8 +26,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Run tests
+      - name: Run tests (Intel pull request runner)
+        if: github.event_name == 'pull_request'
         run: ./gradlew :shared:iosX64Test
+
+      - name: Run tests (Apple Silicon personal runner)
+        if: github.event_name != 'pull_request'
+        run: ./gradlew :shared:iosSimulatorArm64Test
 
       - name: Build
         uses: sersoft-gmbh/xcodebuild-action@v1

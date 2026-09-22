@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ github.event_name == 'pull_request' && 'ubuntu-latest' || 'personal-ci-linux-arm64' }}
+    runs-on: ${{ github.event_name == 'pull_request' && 'ubuntu-latest' || 'personal-ci-macos-arm64' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -23,9 +23,6 @@ jobs:
           distribution: corretto
           java-version: 17
 
-      - name: Install Android SDK prerequisites
-        run: sudo apt-get update && sudo apt-get install -y unzip
-
       - uses: android-actions/setup-android@v4
 
       - name: Setup Gradle
@@ -33,4 +30,3 @@ jobs:
 
       - name: Build
         run: ./gradlew build
-
